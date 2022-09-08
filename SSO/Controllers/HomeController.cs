@@ -29,7 +29,8 @@ namespace SSO.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _graphServiceClient.Me.Request().GetAsync();
-            ViewData["ApiResult"] = user.DisplayName;
+            ViewData["Name"] = user.DisplayName;
+            ViewData["Id"] = user.Id;
             _logger.LogInformation($"Login user: {user.DisplayName} - User Id: {user.Id} - Email {user.Mail}");
             return View();
         }
