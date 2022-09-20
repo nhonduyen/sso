@@ -30,7 +30,12 @@ namespace SSO
                 .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"))
                     .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
                         .AddMicrosoftGraph(Configuration.GetSection("DownstreamApi"))
-                        .AddInMemoryTokenCaches();
+                        .AddDistributedTokenCaches(); // store token in distribute cache; for example redis
+                        //.AddInMemoryTokenCaches(); use to store token in memory
+            services.AddStackExchangeRedisCache(options => {
+                options.InstanceName = "token";
+                options.Configuration = "127.0.0.1:6379";
+            });
 
             services.AddControllersWithViews(options =>
             {
